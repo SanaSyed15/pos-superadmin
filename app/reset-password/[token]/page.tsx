@@ -75,7 +75,7 @@ export default function ResetPassword() {
             placeholder="New Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-[#7B1F1F]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7B1F1F]"
           />
 
           <span
@@ -93,7 +93,7 @@ export default function ResetPassword() {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-[#7B1F1F]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7B1F1F]"
           />
         </div>
 
