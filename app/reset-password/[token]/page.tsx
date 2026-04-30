@@ -45,7 +45,7 @@ export default function ResetPassword() {
 
       // ✅ AUTO REDIRECT TO LOGIN
       setTimeout(() => {
-        router.push("/"); // change if your login route is different
+       router.push("/login"); 
       }, 1500);
 
     } catch (err: any) {
