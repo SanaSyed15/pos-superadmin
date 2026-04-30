@@ -1,8 +1,10 @@
 "use client";
+import axios from "axios";
 import { BASE_URL, API_ENDPOINTS } from "@/lib/config";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 
 export default function SuperAdminLogin() {
   const router = useRouter();
@@ -12,6 +14,20 @@ export default function SuperAdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isForgot, setIsForgot] = useState(false);
+  
+  const handleForgotPassword = async () => {
+  try {
+    await axios.post(
+      "https://pos-backend-s380.onrender.com/api/auth/superadmin/forgot-password",
+      { email } // already in your input
+    );
+
+    alert("Reset link sent to your email");
+  } catch {
+    alert("Error sending email");
+  }
+};
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -187,6 +203,16 @@ export default function SuperAdminLogin() {
                 </button>
               </div>
             </div>
+
+           <div style={{ textAlign: "right", marginTop: "6px" }}>
+  <span
+    style={{ color: "#7B1F1F", cursor: "pointer", fontSize: "14px" }}
+    onClick={handleForgotPassword}
+  >
+    Forgot Password?
+  </span>
+</div>
+
 
             {/* LOGIN BUTTON */}
             <button
