@@ -204,7 +204,8 @@ export default function SuperAdminLogin() {
               </div>
             </div>
 
-           <div style={{ textAlign: "right", marginTop: "6px" }}>
+           <div style={{ textAlign: "right", marginTop: "10px",
+marginBottom: "12px" }}>
   <span
     style={{ color: "#7B1F1F", cursor: "pointer", fontSize: "14px" }}
     onClick={handleForgotPassword}
@@ -212,8 +213,6 @@ export default function SuperAdminLogin() {
     Forgot Password?
   </span>
 </div>
-
-
             {/* LOGIN BUTTON */}
             <button
               onClick={handleLogin}
