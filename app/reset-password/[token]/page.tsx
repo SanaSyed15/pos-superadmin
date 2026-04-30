@@ -1,17 +1,32 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 
 export default function ResetPassword() {
   const { token } = useParams();
+  const router = useRouter();
+
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleReset = async () => {
-    if (!password) {
-      alert("Enter new password");
+    // ✅ VALIDATION
+    if (!password || !confirmPassword) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
       return;
     }
 
@@ -27,8 +42,14 @@ export default function ResetPassword() {
       );
 
       alert("Password reset successful");
-    } catch {
-      alert("Invalid or expired token");
+
+      // ✅ AUTO REDIRECT TO LOGIN
+      setTimeout(() => {
+        router.push("/"); // change if your login route is different
+      }, 1500);
+
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "Invalid or expired token");
     } finally {
       setLoading(false);
     }
@@ -47,13 +68,34 @@ export default function ResetPassword() {
           Enter your new password
         </p>
 
-        {/* PASSWORD INPUT */}
-        <input
-          type="password"
-          placeholder="New Password"
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-[#7B1F1F]"
-        />
+        {/* PASSWORD */}
+        <div className="relative mb-4">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="New Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-[#7B1F1F]"
+          />
+
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-3 cursor-pointer text-sm text-gray-500"
+          >
+            {showPassword ? "Hide" : "Show"}
+          </span>
+        </div>
+
+        {/* CONFIRM PASSWORD */}
+        <div className="relative mb-4">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-[#7B1F1F]"
+          />
+        </div>
 
         {/* BUTTON */}
         <button
