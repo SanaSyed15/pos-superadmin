@@ -127,7 +127,7 @@ export default function ManageRestaurantPage() {
 
     if (actionType === "delete") {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/superadmin/restaurant/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/super-admin/restaurant/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -354,29 +354,32 @@ export default function ManageRestaurantPage() {
 
         {/* ================= DANGER ================= */}
         {tab === "Danger" && (
-          <div>
+          <div className="flex gap-4 mt-4">
+
   {/* ACTIVATE / DEACTIVATE */}
   <button
     onClick={() => {
       setActionType("status");
       setShowConfirm(true);
     }}
+    className="px-6 py-2 rounded-lg text-white bg-yellow-600 hover:bg-yellow-700 transition"
   >
     {data.restaurant.status === "ACTIVE"
       ? "Deactivate Restaurant"
       : "Activate Restaurant"}
   </button>
 
-  {/* DELETE BUTTON (PUT HERE 👇) */}
+  {/* DELETE */}
   <button
     onClick={() => {
       setActionType("delete");
       setShowConfirm(true);
     }}
-    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg mt-4"
+    className="px-6 py-2 rounded-lg text-white bg-red-600 hover:bg-red-700 transition"
   >
     Delete Restaurant
   </button>
+
 </div>
           
         )}
