@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import axios from "axios";
+
 
 /* ================= ROYAL THEME ================= */
 
@@ -51,7 +53,9 @@ export default function ManageRestaurantPage() {
   
 
   const [showConfirm, setShowConfirm] = useState(false);
-  const [showSaved, setShowSaved] = useState(false);
+  const [showSaved, setShowSaved] = useState(false);;
+  const [actionType, setActionType] = useState<"status" | "delete" | null>(null);
+  const [confirmText, setConfirmText] = useState("");
   
 
   /* ================= FETCH ================= */
@@ -98,6 +102,51 @@ export default function ManageRestaurantPage() {
     });
     setShowConfirm(false);
   };
+
+
+  const handleConfirm = async () => {
+  try {
+    if (actionType === "status") {
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/superadmin/restaurant/${id}/status`,
+        {
+          status:
+            data.restaurant.status === "ACTIVE"
+              ? "INACTIVE"
+              : "ACTIVE",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      alert("Status updated");
+    }
+
+    if (actionType === "delete") {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/superadmin/restaurant/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      alert("Restaurant deleted");
+      router.push("/dashboard/restaurants");
+    }
+
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Action failed");
+  } finally {
+    setShowConfirm(false);
+    setConfirmText("");
+    setActionType(null);
+  }
+};
 
   /* ================= UI ================= */
 
@@ -305,18 +354,31 @@ export default function ManageRestaurantPage() {
 
         {/* ================= DANGER ================= */}
         {tab === "Danger" && (
-          <button
-            className="mt-6 px-6 py-2 rounded-md text-white"
-            style={{
-              background: theme.danger,
-              boxShadow: "0 0 22px rgba(176,48,48,0.6)",
-            }}
-            onClick={() => setShowConfirm(true)}
-          >
-            {data.restaurant.status === "ACTIVE"
-              ? "Deactivate Restaurant"
-              : "Activate Restaurant"}
-          </button>
+          <div>
+  {/* ACTIVATE / DEACTIVATE */}
+  <button
+    onClick={() => {
+      setActionType("status");
+      setShowConfirm(true);
+    }}
+  >
+    {data.restaurant.status === "ACTIVE"
+      ? "Deactivate Restaurant"
+      : "Activate Restaurant"}
+  </button>
+
+  {/* DELETE BUTTON (PUT HERE 👇) */}
+  <button
+    onClick={() => {
+      setActionType("delete");
+      setShowConfirm(true);
+    }}
+    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg mt-4"
+  >
+    Delete Restaurant
+  </button>
+</div>
+          
         )}
       </div>
 
@@ -335,14 +397,18 @@ export default function ManageRestaurantPage() {
           }}
         />
       )}
-
-      {/* CONFIRM MODAL */}
-      {showConfirm && (
-        <ConfirmModal
-          onCancel={() => setShowConfirm(false)}
-          onConfirm={toggleStatus}
-        />
-      )}
+ {showConfirm && (
+      <ConfirmModal
+        onCancel={() => {
+          setShowConfirm(false);
+          setConfirmText("");
+        }}
+        onConfirm={handleConfirm}
+        actionType={actionType}
+        confirmText={confirmText}
+        setConfirmText={setConfirmText}
+      />
+    )}
     </div>
   );
 }
@@ -472,32 +538,63 @@ function SaveBar({ onSave, onCancel }: any) {
   );
 }
 
-function ConfirmModal({ onCancel, onConfirm }: any) {
+function ConfirmModal({
+  onCancel,
+  onConfirm,
+  actionType,
+  confirmText,
+  setConfirmText,
+}: any) {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div
-        className="rounded-xl p-6 w-[360px]"
-        style={{ background: theme.surface }}
-      >
-        <h3 className="font-semibold mb-2">Confirm action</h3>
-        <p className="text-sm mb-6">
-          This will immediately affect restaurant access.
+      <div className="rounded-xl p-6 w-[360px] bg-white">
+
+        {/* TITLE */}
+        <h3 className="font-semibold mb-2">
+          {actionType === "delete" ? "⚠️ Delete Restaurant" : "Confirm action"}
+        </h3>
+
+        {/* MESSAGE */}
+        <p className="text-sm mb-4">
+          {actionType === "delete"
+            ? "This will permanently delete the restaurant. This cannot be undone."
+            : "This will immediately affect restaurant access."}
         </p>
+
+        {/* INPUT ONLY FOR DELETE */}
+        {actionType === "delete" && (
+          <input
+            type="text"
+            value={confirmText}
+            onChange={(e) => setConfirmText(e.target.value)}
+            placeholder="Type DELETE"
+            className="w-full border px-3 py-2 rounded-lg mb-4"
+          />
+        )}
+
+        {/* BUTTONS */}
         <div className="flex justify-end gap-3">
           <button onClick={onCancel}>Cancel</button>
+
           <button
             onClick={onConfirm}
-            className="px-4 py-2 rounded-md text-white"
-            style={{ background: theme.danger }}
+            disabled={actionType === "delete" && confirmText !== "DELETE"}
+            className={`px-4 py-2 rounded text-white ${
+              actionType === "delete"
+                ? confirmText === "DELETE"
+                  ? "bg-red-600"
+                  : "bg-gray-400 cursor-not-allowed"
+                : "bg-red-600"
+            }`}
           >
             Confirm
           </button>
         </div>
+
       </div>
     </div>
   );
 }
-
 /* ================= ICONS ================= */
 
 function EditIcon() {
