@@ -108,7 +108,7 @@ export default function ManageRestaurantPage() {
   try {
     if (actionType === "status") {
       await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/super-admin/restaurants/${id}/status`,
+        `${API_BASE}/super-admin/restaurants/${id}/status`,
         {
           status:
             data.restaurant.status === "ACTIVE"
@@ -127,7 +127,7 @@ export default function ManageRestaurantPage() {
 
     if (actionType === "delete") {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/super-admin/restaurants/${id}`,
+        `${API_BASE}/super-admin/restaurants/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -147,7 +147,6 @@ export default function ManageRestaurantPage() {
     setActionType(null);
   }
 };
-
   /* ================= UI ================= */
 
   return (
