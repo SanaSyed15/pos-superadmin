@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 
 /* ================= TYPES ================= */
 
@@ -37,6 +38,8 @@ export default function RestaurantsPage() {
   const [showAdd, setShowAdd] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+const [statusFilter, setStatusFilter] = useState("ALL");
 
   useEffect(() => {
   const t = localStorage.getItem("token"); // ✅ FIXED
@@ -68,157 +71,231 @@ setLoading(false); //
   }, [token]);
 
   if (loading) {
-    return <p className="text-[#7B1F1F]">Loading restaurants…</p>;
-  }
+  return (
+    <div className="space-y-6 animate-pulse">
+
+      {/* HEADER SKELETON */}
+      <div className="h-8 w-48 bg-[#EADFD7] rounded-lg" />
+
+      {/* STATS */}
+      <div className="grid grid-cols-3 gap-6">
+        <div className="h-20 bg-[#EADFD7] rounded-xl" />
+        <div className="h-20 bg-[#EADFD7] rounded-xl" />
+        <div className="h-20 bg-[#EADFD7] rounded-xl" />
+      </div>
+
+      {/* SEARCH BAR */}
+      <div className="h-12 bg-[#EADFD7] rounded-xl" />
+
+      {/* TABLE ROWS */}
+      <div className="space-y-3">
+        {[...Array(5)].map((_, i) => (
+          <div
+            key={i}
+            className="h-14 bg-[#EADFD7] rounded-xl"
+          />
+        ))}
+      </div>
+
+    </div>
+  );
+}
+
+  const filteredRestaurants = restaurants.filter((r) => {
+  const matchesSearch =
+    r.name.toLowerCase().includes(search.toLowerCase()) ||
+    (r.owner_name || "").toLowerCase().includes(search.toLowerCase());
+
+  const matchesStatus =
+    statusFilter === "ALL" || r.status === statusFilter;
+
+  return matchesSearch && matchesStatus;
+});
+
 
   return (
     <>
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1
-            className="text-2xl font-semibold"
-            style={{ color: "#3B0A0D", fontFamily: "var(--font-heading)" }}
-          >
-            Restaurants
-          </h1>
-          <p className="text-sm text-[#7B1F1F]">
-            Manage and onboard restaurants
-          </p>
-        </div>
+  {/* HEADER */}
+  <div className="flex justify-between items-center mb-6">
+    <div>
+      <h1 className="text-3xl font-semibold text-[#3B0A0D]">
+        Restaurants
+      </h1>
+      <p className="text-sm text-[#7B1F1F]">
+        Manage and onboard restaurants
+      </p>
+    </div>
 
-        <button
-          onClick={() => setShowAdd(true)}
-          className="px-6 py-2.5 rounded-xl text-sm font-medium text-white"
-          style={{
-            backgroundColor: "#7B1F1F",
-            boxShadow: "0 0 18px rgba(176,48,48,0.9)",
-          }}
-        >
-          + Add Restaurant
-        </button>
-      </div>
+    <button
+      onClick={() => setShowAdd(true)}
+      className="px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all duration-300"
+style={{
+  backgroundColor: "#D4AF37", // gold
+  color: "#3B0A0D",
+  boxShadow: "0 4px 14px rgba(212,175,55,0.4)",
+}}
+    >
+      + Add Restaurant
+    </button>
+  </div>
 
-      {/* SUCCESS BANNER */}
-      {successMessage && (
-  <div
-    className="mb-6 px-5 py-3 rounded-xl text-sm font-medium flex items-center gap-2"
+  {/* STATS */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <StatCard title="Total Restaurants" value={restaurants.length} />
+
+    <StatCard
+      title="Active"
+      value={restaurants.filter(r => r.status === "ACTIVE").length}
+      color="green"
+    />
+
+    <StatCard
+      title="Inactive"
+      value={restaurants.filter(r => r.status === "INACTIVE").length}
+      color="red"
+    />
+  </div>
+
+  {/* SEARCH + FILTER */}
+
+<div className="flex items-center gap-4 bg-white p-4 rounded-xl border border-[#EADFD7] mb-6">
+
+  {/* SEARCH INPUT */}
+  <div className="relative flex-1">
+    
+    {/* ICON */}
+    <Search
+      size={16}
+      className="absolute left-3 top-1/2 -translate-y-1/2"
+      style={{ color: "#9B8A7A" }}
+    />
+
+    <input
+      type="text"
+      placeholder="Search by name or owner..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      className="w-full pl-10 pr-4 py-2 rounded-lg border outline-none
+                 text-[#3B0A0D] placeholder:text-[#9B8A7A]"
+      style={{
+        borderColor: "#EADFD7",
+        backgroundColor: "#FBF6EE",
+      }}
+    />
+  </div>
+
+  {/* FILTER */}
+  <select
+    value={statusFilter}
+    onChange={(e) => setStatusFilter(e.target.value)}
+    className="px-4 py-2 rounded-lg border text-[#3B0A0D] font-medium"
     style={{
-      backgroundColor: "rgba(34,197,94,0.15)", // soft green
-      color: "#14532d", // dark green text
-      border: "1px solid rgba(34,197,94,0.4)",
-      boxShadow: "0 0 18px rgba(34,197,94,0.35)",
-      transform: "translateY(0)",
-      transition: "all 0.3s ease",
+      borderColor: "#EADFD7",
+      backgroundColor: "#FBF6EE",
     }}
   >
-    {/* CHECK SVG */}
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#16a34a"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
+    <option value="ALL">All Status</option>
+    <option value="ACTIVE">Active</option>
+    <option value="INACTIVE">Inactive</option>
+  </select>
 
-    <span>{successMessage}</span>
-  </div>
-)}
+</div>
 
+  {/* SUCCESS BANNER */}
+  {successMessage && (
+    <div className="mb-6 px-4 py-3 rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm">
+      {successMessage}
+    </div>
+  )}
 
-      {/* TABLE */}
-      <div
-        className="rounded-2xl overflow-hidden border"
-        style={{
-          borderColor: "#C8A951",
-          boxShadow: "0 0 28px rgba(200,169,81,0.45)",
-        }}
-      >
-        <table className="w-full text-sm">
-          <thead style={{ backgroundColor: "#FBF6EE" }}>
-            <tr className="text-left font-semibold text-[#3B0A0D]">
-              <th className="px-6 py-4">Restaurant</th>
-              <th className="px-6 py-4">Owner</th>
-              <th className="px-6 py-4">City</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4 text-right">Action</th>
-            </tr>
-          </thead>
+  {/* TABLE */}
+  <div className="bg-white rounded-2xl border border-[#EADFD7] overflow-hidden">
+    <table className="w-full text-sm">
 
-          <tbody>
-            {restaurants.map((r, i) => (
-              <tr
-                key={r.id}
-                className="border-t"
-                style={{
-                  backgroundColor:
-                    i % 2 === 0
-                      ? "#FFFFFF"
-                      : "rgba(200,169,81,0.12)",
-                }}
+      <thead
+  style={{
+    background: "linear-gradient(180deg, #FFF8E7, #F3E6C9)",
+    color: "#3B0A0D",
+    borderBottom: "1px solid rgba(200,169,81,0.4)",
+  }}
+>
+  <tr>
+    <th className="px-6 py-4 text-left text-xs font-semibold tracking-wide uppercase">
+      Restaurant
+    </th>
+    <th className="px-6 py-4 text-left text-xs font-semibold tracking-wide uppercase">
+      Owner
+    </th>
+    <th className="px-6 py-4 text-left text-xs font-semibold tracking-wide uppercase">
+      City
+    </th>
+    <th className="px-6 py-4 text-left text-xs font-semibold tracking-wide uppercase">
+      Status
+    </th>
+    <th className="px-6 py-4 text-right text-xs font-semibold tracking-wide uppercase">
+      Action
+    </th>
+  </tr>
+</thead>
+
+      <tbody>
+        {filteredRestaurants.map((r, i) => (
+          <tr
+            key={r.id}
+            className={`transition ${
+              i % 2 === 0 ? "bg-white" : "bg-[#FBF6EE]"
+            } hover:bg-[#F3ECE6]`}
+          >
+            <td className="px-6 py-4 font-medium text-[#3B0A0D]">
+              {r.name}
+            </td>
+
+            <td className="px-6 py-4 text-[#7B1F1F]">
+              {r.owner_name || "—"}
+            </td>
+
+            <td className="px-6 py-4 text-[#7B1F1F]">
+              {r.city}
+            </td>
+
+            <td className="px-6 py-4">
+              <StatusBadge status={r.status} />
+            </td>
+
+            <td className="px-6 py-4 text-right">
+              <button
+                onClick={() =>
+                  router.push(`/dashboard/restaurants/${r.id}`)
+                }
+                className="px-4 py-1.5 rounded-md text-white text-xs"
+                style={{ backgroundColor: "#7B1F1F" }}
               >
-                <td className="px-6 py-4 font-semibold text-[#3B0A0D]">
-                  {r.name}
-                </td>
-                <td className="px-6 py-4 text-[#7B1F1F]">
-                  {r.owner_name || "—"}
-                </td>
-                <td className="px-6 py-4 text-[#7B1F1F]">
-                  {r.city}
-                </td>
-                <td className="px-6 py-4">
-                  <span
-                    className="px-3 py-1 rounded-full text-xs font-semibold"
-                    style={{
-                      backgroundColor:
-                        r.status === "ACTIVE"
-                          ? "rgba(200,169,81,0.35)"
-                          : "rgba(155,43,43,0.25)",
-                      color:
-                        r.status === "ACTIVE"
-                          ? "#3B0A0D"
-                          : "#7B1F1F",
-                    }}
-                  >
-                    {r.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <button
-                    onClick={() =>
-                      router.push(`/dashboard/restaurants/${r.id}`)
-                    }
-                    className="px-4 py-1.5 rounded-lg text-xs font-medium text-white"
-                    style={{ backgroundColor: "#7B1F1F" }}
-                  >
-                    Manage
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                Manage
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
 
-      {showAdd && (
-        <AddRestaurantModal
-          token={token!}
-          onClose={() => setShowAdd(false)}
-          onSuccess={() => {
-            fetchRestaurants();
-            setSuccessMessage("Restaurant added successfully");
-            setTimeout(() => setSuccessMessage(null), 4000);
-          }}
-        />
-      )}
-    </>
+    </table>
+  </div>
+
+  {/* MODAL */}
+  {showAdd && (
+    <AddRestaurantModal
+      token={token!}
+      onClose={() => setShowAdd(false)}
+      onSuccess={() => {
+        fetchRestaurants();
+        setSuccessMessage("Restaurant added successfully");
+        setTimeout(() => setSuccessMessage(null), 4000);
+      }}
+    />
+  )}
+</>
   );
 }
+
 
 /* ================= MODAL ================= */
 
@@ -412,5 +489,52 @@ function Input({
         }}
       />
     </div>
+  );
+}
+
+function StatCard({
+  title,
+  value,
+  color = "default",
+}: {
+  title: string;
+  value: number;
+  color?: "default" | "green" | "red";
+}) {
+  const colorStyle =
+    color === "green"
+      ? "text-green-600"
+      : color === "red"
+      ? "text-red-500"
+      : "text-[#3B0A0D]";
+
+  return (
+    <div className="bg-white rounded-xl p-5 border border-[#EADFD7]">
+      <p className="text-sm text-gray-500 mb-1">{title}</p>
+      <p className={`text-2xl font-semibold ${colorStyle}`}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function StatusBadge({ status }: { status: Status }) {
+  const isActive = status === "ACTIVE";
+
+  return (
+    <span
+      className="px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit"
+      style={{
+        backgroundColor: isActive ? "#EADFD7" : "#FBE4E4",
+        color: isActive ? "#3B0A0D" : "#7B1F1F",
+      }}
+    >
+      <span
+        className={`w-2 h-2 rounded-full ${
+          isActive ? "bg-green-500" : "bg-red-400"
+        }`}
+      />
+      {status}
+    </span>
   );
 }

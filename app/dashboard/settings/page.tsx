@@ -2,41 +2,59 @@
 
 import { useState } from "react";
 
-/* ---------------- PAGE ---------------- */
+/* ================= TYPES ================= */
+
+type Settings = {
+  platformName: string;
+  supportEmail: string;
+  supportPhone: string;
+  commissionPercent: string;
+  defaultGST: string;
+  maintenanceMode: boolean;
+  allowOnboarding: boolean;
+};
+
+/* ================= PAGE ================= */
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<Settings>({
     platformName: "All-in-One Restaurant POS",
     supportEmail: "support@restaurantpos.com",
     supportPhone: "+91 98765 43210",
-
     commissionPercent: "5",
     defaultGST: "5",
-
     maintenanceMode: false,
     allowOnboarding: true,
   });
 
-  const update = (key: string, value: any) =>
-    setSettings({ ...settings, [key]: value });
+  /* ---------------- UPDATE HANDLER ---------------- */
+
+  const update = <K extends keyof Settings>(
+    key: K,
+    value: Settings[K]
+  ) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
+  };
+
+  /* ---------------- UI ---------------- */
 
   return (
-    <div className="space-y-8">
+    <div className="px-12 py-10 space-y-10 bg-[#FBF6EE] min-h-screen">
 
       {/* HEADER */}
-      <div>
-        <h1
-          className="text-xl font-semibold"
-          style={{ color: "#3B0A0D", fontFamily: "var(--font-heading)" }}
-        >
-          Settings
-        </h1>
-        <p className="text-sm text-[#7B1F1F]">
-          Configure platform-wide controls and defaults
-        </p>
+      <div className="relative">
+        <div className="absolute left-0 top-1 h-10 w-[4px] bg-[#C8A951] rounded-full" />
+        <div className="pl-4">
+          <h1 className="text-3xl font-semibold text-[#3B0A0D]">
+            Platform Settings
+          </h1>
+          <p className="text-sm text-[#7B1F1F] mt-1">
+            Configure platform-wide controls and defaults
+          </p>
+        </div>
       </div>
 
-      {/* PLATFORM SETTINGS */}
+      {/* PLATFORM */}
       <Section title="Platform Settings">
         <Input
           label="Platform Name"
@@ -55,7 +73,7 @@ export default function SettingsPage() {
         />
       </Section>
 
-      {/* FINANCIAL SETTINGS */}
+      {/* FINANCIAL */}
       <Section title="Financial Settings">
         <Input
           label="Platform Commission (%)"
@@ -69,7 +87,7 @@ export default function SettingsPage() {
         />
       </Section>
 
-      {/* SYSTEM CONTROLS */}
+      {/* SYSTEM */}
       <Section title="System Controls">
         <Toggle
           label="Maintenance Mode"
@@ -86,25 +104,47 @@ export default function SettingsPage() {
         />
       </Section>
 
-      {/* SAVE */}
-      <div className="flex justify-end">
-        <button
-          onClick={() => alert("Settings saved successfully")}
-          className="px-6 py-2 rounded-md text-sm font-medium text-white"
-          style={{
-            backgroundColor: "#7B1F1F",
-            boxShadow: "0 0 12px rgba(176,48,48,0.8)",
-          }}
-        >
-          Save Settings
-        </button>
-      </div>
+      {/* SAVE SECTION */}
+<div className="flex justify-end pt-4 border-t border-[#EADFD7]">
 
+  <div className="flex gap-3">
+
+    <button
+      className="px-5 py-2 rounded-md text-sm font-medium border"
+      style={{
+        borderColor: "#C8A951",
+        color: "#7B1F1F",
+        background: "#FBF6EE",
+      }}
+    >
+      Cancel
+    </button>
+
+    <button
+      onClick={() => alert("Settings saved")}
+      className="px-6 py-2 rounded-md text-sm font-semibold text-white transition"
+      style={{
+        background: "linear-gradient(135deg,#7B1F1F,#3B0A0D)",
+        boxShadow: "0 4px 14px rgba(123,31,31,0.4)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-1px)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+      }}
+    >
+      Save Settings
+    </button>
+
+  </div>
+</div>
     </div>
   );
 }
 
-/* ---------------- UI COMPONENTS ---------------- */
+
+/* ================= SECTION ================= */
 
 function Section({
   title,
@@ -115,19 +155,24 @@ function Section({
 }) {
   return (
     <div
-      className="bg-white rounded-xl p-5 border"
+      className="relative bg-white rounded-2xl p-6 transition-all duration-300"
       style={{
-        borderColor: "#C8A951",
-        boxShadow: "0 0 16px rgba(200,169,81,0.4)",
+        border: "1px solid rgba(200,169,81,0.35)",
+        boxShadow: "0 10px 30px rgba(200,169,81,0.2)",
       }}
     >
-      <h2 className="text-sm font-semibold text-[#3B0A0D] mb-4">
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#C8A951] to-[#E8D9A5]" />
+
+      <h2 className="text-sm font-semibold text-[#3B0A0D] mb-5">
         {title}
       </h2>
-      <div className="space-y-4">{children}</div>
+
+      <div className="space-y-5">{children}</div>
     </div>
   );
 }
+
+/* ================= INPUT ================= */
 
 function Input({
   label,
@@ -140,21 +185,25 @@ function Input({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-[#7B1F1F] mb-1">
+      <label className="block text-xs text-[#7B1F1F] mb-2 uppercase tracking-wide">
         {label}
       </label>
+
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-3 py-2 rounded-md text-sm bg-white border"
+        className="w-full px-4 py-2.5 rounded-lg text-sm outline-none transition"
         style={{
-          borderColor: "#C8A951",
+          border: "1px solid #EADFD7",
+          background: "#FBF6EE",
           color: "#3B0A0D",
         }}
       />
     </div>
   );
 }
+
+/* ================= TOGGLE ================= */
 
 function Toggle({
   label,
@@ -168,7 +217,8 @@ function Toggle({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <div className="flex justify-between items-start">
+    <div className="flex justify-between items-center">
+
       <div>
         <p className="text-sm font-medium text-[#3B0A0D]">
           {label}
@@ -178,19 +228,24 @@ function Toggle({
         </p>
       </div>
 
-      <button
+      {/* SWITCH */}
+      <div
         onClick={() => onChange(!value)}
-        className="px-4 py-1.5 rounded-full text-xs font-semibold border transition"
+        className="w-12 h-6 flex items-center rounded-full cursor-pointer transition"
         style={{
-          borderColor: "#C8A951",
-          backgroundColor: value
-            ? "rgba(200,169,81,0.25)"
-            : "rgba(155,43,43,0.15)",
-          color: value ? "#3B0A0D" : "#7B1F1F",
+          background: value ? "#C8A951" : "#EADFD7",
+          padding: "3px",
         }}
       >
-        {value ? "ON" : "OFF"}
-      </button>
+        <div
+          className="w-4 h-4 bg-white rounded-full transition"
+          style={{
+            transform: value
+              ? "translateX(20px)"
+              : "translateX(0px)",
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -3,6 +3,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
+import { Pencil } from "lucide-react";
+
+import { Playfair_Display } from "next/font/google";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
 
 
 /* ================= ROYAL THEME ================= */
@@ -156,93 +164,150 @@ export default function ManageRestaurantPage() {
     >
       {/* SAVED TOAST */}
       {showSaved && (
-        <div
-          className="fixed top-6 right-6 px-4 py-2 rounded-lg shadow-lg z-50"
-          style={{
-            background: theme.surface,
-            boxShadow: `0 0 18px ${theme.goldSoft}`,
-            fontWeight: 500,
-          }}
-        >
-          ✓ Changes saved
-        </div>
-      )}
+  <div
+    className="fixed top-6 right-6 px-5 py-3 rounded-xl flex items-center gap-3 z-50 transition-all"
+    style={{
+      background: "linear-gradient(135deg, #FFF8E7, #F3E6C9)",
+      border: "1px solid rgba(200,169,81,0.5)",
+      boxShadow: "0 8px 24px rgba(200,169,81,0.35)",
+      backdropFilter: "blur(6px)",
+    }}
+  >
+    {/* ICON */}
+    <div
+      className="w-6 h-6 flex items-center justify-center rounded-full"
+      style={{
+        background: "linear-gradient(135deg,#C8A951,#E8D9A5)",
+      }}
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#3B0A0D"
+        strokeWidth="3"
+      >
+        <path d="M20 6L9 17l-5-5" />
+      </svg>
+    </div>
+
+    {/* TEXT */}
+    <span
+      className="text-sm font-semibold"
+      style={{ color: theme.maroonDark }}
+    >
+      Changes saved successfully
+    </span>
+  </div>
+)}
 
       {/* ================= HEADER ================= */}
-      <div className="mb-12">
-        <div className="flex justify-between items-start">
-          <div className="relative">
-            <span
-              className="absolute -left-4 top-2 h-10 w-1 rounded-full"
-              style={{ background: theme.gold }}
-            />
-            <h1
-              className="text-4xl font-semibold tracking-tight"
-              style={{ color: theme.maroonDark }}
-            >
-              {data.restaurant.name}
-            </h1>
+      <div className="mb-10 flex justify-between items-center">
 
-            <p
-              className="mt-2 text-sm flex items-center gap-2"
-              style={{ color: theme.textMuted }}
-            >
-              <LocationIcon />
-              {data.restaurant.city}, {data.restaurant.state}
-            </p>
-          </div>
+  <div className="relative">
 
-          <div className="flex items-center gap-5">
-            <StatusPill status={data.restaurant.status} />
-            <button
-              onClick={() => router.push("/dashboard/restaurants")}
-              className="font-medium hover:underline"
-              style={{ color: theme.maroon }}
-            >
-              ← Back
-            </button>
-          </div>
-        </div>
+  {/* GOLD ACCENT BAR */}
+  <span
+    className="absolute -left-5 top-2 h-10 w-1 rounded-full"
+    style={{ background: theme.gold }}
+  />
 
-        <div
-          className="mt-6 h-px"
-          style={{
-            background: `linear-gradient(to right, ${theme.gold}, transparent)`,
-          }}
-        />
-      </div>
+  <h1
+  className={`${playfair.className} text-5xl font-semibold tracking-wide`}
+  style={{
+    color: theme.maroonDark,
+    letterSpacing: "1px",
+  }}
+>
+  {data.restaurant.name}
+</h1>
 
+  <p
+    className="mt-2 flex items-center gap-2 text-sm"
+    style={{ color: theme.textMuted }}
+  >
+    <LocationIcon />
+    {data.restaurant.city}, {data.restaurant.state}
+  </p>
+
+</div>
+
+  <div className="flex items-center gap-4">
+    <StatusPill status={data.restaurant.status} />
+
+   <button
+  onClick={() => router.push("/dashboard/restaurants")}
+  className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all"
+  style={{
+    background: "linear-gradient(135deg, #7B1F1F, #3B0A0D)", // 🔥 maroon gradient
+    color: "#F3DFA2", // gold text
+    border: "1px solid rgba(200,169,81,0.5)",
+    boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-1px)";
+    e.currentTarget.style.boxShadow =
+      "0 6px 18px rgba(0,0,0,0.35)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow =
+      "0 4px 14px rgba(0,0,0,0.25)";
+  }}
+>
+  <span style={{ fontSize: "16px" }}>←</span>
+  Back 
+</button>
+  </div>
+
+</div>
       {/* ================= CONTENT SURFACE ================= */}
       <div
-        className="rounded-2xl px-12 py-10"
-        style={{
-          background: theme.surface,
-          boxShadow: `0 0 0 1px ${theme.divider}`,
-        }}
-      >
+  className="rounded-2xl px-12 py-10"
+  style={{
+    background: theme.surface,
+  }}
+>
         {/* TABS */}
-        <div className="flex gap-10 mb-8 border-b" style={{ borderColor: theme.divider }}>
-          {(["Details", "Owner", "Tax", "Operations", "Danger"] as Tab[]).map(t => (
-            <button
-              key={t}
-              onClick={() => {
-                setTab(t);
-                setEditing(false);
-                setDraft(data);
-              }}
-              className="pb-4 font-medium relative"
-              style={{ color: tab === t ? theme.maroon : theme.textMuted }}
-            >
-              {t}
-              {tab === t && (
-                <span
-                  className="absolute bottom-0 left-0 w-full h-[2px]"
-                  style={{ background: theme.gold }}
-                />
-              )}
-            </button>
-          ))}
-        </div>
+       <div className="flex gap-6 mb-8">
+  {(["Details", "Owner", "Tax", "Operations", "Danger"] as Tab[]).map((t) => {
+    const active = tab === t;
+
+    return (
+      <button
+        key={t}
+        onClick={() => {
+          setTab(t);
+          setEditing(false);
+          setDraft(data);
+        }}
+        className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300"
+        style={{
+          background: active
+            ? "linear-gradient(135deg, #C8A951, #E8D9A5)" // gold gradient
+            : "transparent",
+          color: active ? "#3B0A0D" : theme.textMuted,
+          boxShadow: active
+            ? "0 4px 14px rgba(200,169,81,0.35)"
+            : "none",
+          border: active
+            ? "1px solid rgba(200,169,81,0.5)"
+            : "1px solid transparent",
+        }}
+        onMouseEnter={(e) => {
+  e.currentTarget.style.transform = "scale(1.05)";
+}}
+onMouseLeave={(e) => {
+  e.currentTarget.style.transform = "scale(1)";
+}}
+        
+      >
+        {t}
+      </button>
+    );
+  })}
+</div>
 
         {/* SECTION HEADER */}
         <div className="flex justify-between items-center mb-8">
@@ -254,13 +319,30 @@ export default function ManageRestaurantPage() {
           </h2>
 
           {tab !== "Danger" && !editing && (
-            <button
-              onClick={() => setEditing(true)}
-              className="flex items-center gap-2 font-medium"
-              style={{ color: theme.gold }}
-            >
-              <EditIcon /> Edit
-            </button>
+            
+
+<button
+  onClick={() => setEditing(true)}
+  className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition-all"
+  style={{
+    background: "linear-gradient(135deg, #D4AF37, #C8A951)",
+    color: "#3B0A0D",
+    boxShadow: "0 6px 16px rgba(200,169,81,0.35)",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-2px)";
+    e.currentTarget.style.boxShadow =
+      "0 10px 22px rgba(200,169,81,0.45)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow =
+      "0 6px 16px rgba(200,169,81,0.35)";
+  }}
+>
+  <Pencil size={16} />
+  Edit
+</button>
           )}
         </div>
 
@@ -361,7 +443,11 @@ export default function ManageRestaurantPage() {
       setActionType("status");
       setShowConfirm(true);
     }}
-    className="px-6 py-2 rounded-lg text-white bg-yellow-600 hover:bg-yellow-700 transition"
+    className="px-6 py-2 rounded-lg text-white"
+style={{
+  background: "linear-gradient(135deg, #9B2B2B, #7B1F1F)",
+  boxShadow: "0 4px 16px rgba(155,43,43,0.4)",
+}}
   >
     {data.restaurant.status === "ACTIVE"
       ? "Deactivate Restaurant"
@@ -417,128 +503,441 @@ export default function ManageRestaurantPage() {
 
 /* ================= COMPONENTS ================= */
 
+import {
+Phone,
+Mail,
+MapPin,
+Package,
+Utensils,
+FileText
+} from "lucide-react";
+
 function Field({ label, value, edit, onChange, full }: any) {
-  return (
-    <div className={full ? "col-span-2" : ""}>
-      <label className="block text-xs mb-2" style={{ color: theme.textMuted }}>
-        {label}
-      </label>
-      {edit ? (
-        <input
-          value={value ?? ""}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-transparent border-b outline-none py-1 text-sm"
-          style={{
-            borderColor: theme.gold,
-            color: theme.maroonDark,
-          }}
-        />
-      ) : (
-        <div style={{ color: theme.maroonDark, fontWeight: 500 }}>
-          {value || "—"}
-        </div>
-      )}
-    </div>
-  );
+
+/* ICON MAPPING */
+const getIcon = (label: string) => {
+switch (label) {
+case "Phone": return <Phone size={16} />;
+case "Email": return <Mail size={16} />;
+case "Address": return <MapPin size={16} />;
+case "Pincode": return <Package size={16} />;
+case "Restaurant Type": return <Utensils size={16} />;
+default: return <FileText size={16} />;
+}
+};
+
+return (
+<div
+className={`relative flex items-start gap-4 rounded-xl p-5 transition-all duration-200 ${
+        full ? "col-span-2" : ""
+      }`}
+style={{
+background: "linear-gradient(180deg, #FFFFFF, #FBF6EE)",
+border: `1px solid ${theme.divider}`,
+boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+}}
+onMouseEnter={(e) => {
+e.currentTarget.style.transform = "translateY(-2px)";
+e.currentTarget.style.boxShadow =
+"0 8px 22px rgba(0,0,0,0.08)";
+e.currentTarget.style.border = `1px solid ${theme.gold}`;
+}}
+onMouseLeave={(e) => {
+e.currentTarget.style.transform = "translateY(0)";
+e.currentTarget.style.boxShadow =
+"0 4px 12px rgba(0,0,0,0.05)";
+e.currentTarget.style.border = `1px solid ${theme.divider}`;
+}}
+>
+{/* GOLD ACCENT BAR */}
+<div
+style={{
+position: "absolute",
+left: 0,
+top: 12,
+bottom: 12,
+width: "4px",
+borderRadius: "10px",
+background: theme.gold,
+}}
+/>
+
+  {/* ICON BOX */}
+  <div
+    className="flex items-center justify-center rounded-lg"
+    style={{
+      width: "40px",
+      height: "40px",
+      background: theme.goldSoft,
+      color: theme.maroonDark,
+      flexShrink: 0,
+    }}
+  >
+    {getIcon(label)}
+  </div>
+
+  {/* CONTENT */}
+  <div className="flex-1">
+    {/* LABEL */}
+    <p
+      className="text-[11px] uppercase tracking-wider"
+      style={{ color: theme.textMuted }}
+    >
+      {label}
+    </p>
+
+    {/* VALUE / INPUT */}
+    {edit ? (
+      <input
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-transparent outline-none mt-1 text-sm font-semibold"
+        style={{
+          color: theme.maroonDark,
+          borderBottom: `1px solid ${theme.gold}`,
+          paddingBottom: "2px",
+        }}
+      />
+    ) : (
+      <p
+        className="text-sm font-semibold mt-1"
+        style={{ color: theme.maroonDark }}
+      >
+        {value || "—"}
+      </p>
+    )}
+  </div>
+</div>
+
+);
 }
 
-function ReadOnly({ label, value }: any) {
-  return (
-    <div>
-      <label className="block text-xs mb-2" style={{ color: theme.textMuted }}>
-        {label}
-      </label>
-      <div style={{ color: theme.maroonDark, fontWeight: 500 }}>
-        {value}
-      </div>
-    </div>
-  );
+
+function ReadOnly({ label, value, full }: any) {
+const getIcon = (label: string) => {
+switch (label) {
+case "Owner Email": return <Mail size={16} />;
+default: return <FileText size={16} />;
+}
+};
+
+return (
+<div
+className={`relative flex items-start gap-4 rounded-xl p-5 ${
+        full ? "col-span-2" : ""
+      }`}
+style={{
+background: "linear-gradient(180deg, #FFFFFF, #FBF6EE)",
+border: `1px solid ${theme.divider}`,
+boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+}}
+>
+{/* LEFT GOLD STRIP */}
+<div
+style={{
+position: "absolute",
+left: 0,
+top: 12,
+bottom: 12,
+width: "4px",
+borderRadius: "10px",
+background: theme.gold,
+}}
+/>
+
+  {/* ICON */}
+  <div
+    className="flex items-center justify-center rounded-lg"
+    style={{
+      width: "40px",
+      height: "40px",
+      background: theme.goldSoft,
+      color: theme.maroonDark,
+    }}
+  >
+    {getIcon(label)}
+  </div>
+
+  {/* TEXT */}
+  <div>
+    <p
+      className="text-[11px] uppercase tracking-wider"
+      style={{ color: theme.textMuted }}
+    >
+      {label}
+    </p>
+
+    <p
+      className="text-sm font-semibold mt-1"
+      style={{ color: theme.maroonDark }}
+    >
+      {value || "—"}
+    </p>
+  </div>
+</div>
+
+);
 }
 
-function Toggle({ label, value, edit, onChange }: any) {
-  return (
-    <div>
-      <label className="block text-xs mb-3" style={{ color: theme.textMuted }}>
-        {label}
-      </label>
-      {edit ? (
-        <input
-          type="checkbox"
-          checked={value}
-          onChange={(e) => onChange(e.target.checked)}
-        />
-      ) : (
-        <div style={{ color: theme.maroonDark, fontWeight: 500 }}>
-          {value ? "Enabled" : "Disabled"}
-        </div>
-      )}
-    </div>
-  );
-}
 
-function Select({ label, value, edit, options, onChange }: any) {
-  return (
+import { Power } from "lucide-react";
+
+function Toggle({ label, value, edit, onChange, full }: any) {
+return (
+<div
+className={`relative flex items-center justify-between gap-4 rounded-xl p-5 transition ${
+        full ? "col-span-2" : ""
+      }`}
+style={{
+background: "linear-gradient(180deg, #FFFFFF, #FBF6EE)",
+border: `1px solid ${theme.divider}`,
+boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+}}
+onMouseEnter={(e) => {
+e.currentTarget.style.transform = "translateY(-2px)";
+e.currentTarget.style.boxShadow =
+"0 8px 22px rgba(0,0,0,0.08)";
+e.currentTarget.style.border = `1px solid ${theme.gold}`;
+}}
+onMouseLeave={(e) => {
+e.currentTarget.style.transform = "translateY(0)";
+e.currentTarget.style.boxShadow =
+"0 4px 12px rgba(0,0,0,0.05)";
+e.currentTarget.style.border = `1px solid ${theme.divider}`;
+}}
+>
+{/* LEFT SIDE (ICON + TEXT) */} <div className="flex items-center gap-4">
+{/* ICON */}
+<div
+className="flex items-center justify-center rounded-lg"
+style={{
+width: "40px",
+height: "40px",
+background: theme.goldSoft,
+color: theme.maroonDark,
+}}
+> <Power size={16} /> </div>
+
+    {/* LABEL */}
     <div>
-      <label className="block text-xs mb-2" style={{ color: theme.textMuted }}>
+      <p
+        className="text-[11px] uppercase tracking-wider"
+        style={{ color: theme.textMuted }}
+      >
         {label}
-      </label>
-      {edit ? (
-        <select
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-transparent border-b outline-none py-1 text-sm"
-          style={{ borderColor: theme.gold, color: theme.maroonDark }}
+      </p>
+
+      {!edit && (
+        <p
+          className="text-sm font-semibold mt-1"
+          style={{ color: theme.maroonDark }}
         >
-          {options.map((o: string) => (
-            <option key={o}>{o}</option>
-          ))}
-        </select>
-      ) : (
-        <div style={{ color: theme.maroonDark, fontWeight: 500 }}>
-          {value}
-        </div>
+          {value ? "Enabled" : "Disabled"}
+        </p>
       )}
     </div>
-  );
+  </div>
+
+  {/* RIGHT SIDE (SWITCH) */}
+  {edit && (
+    <div
+      onClick={() => onChange(!value)}
+      className="w-12 h-6 flex items-center rounded-full cursor-pointer transition"
+      style={{
+        background: value ? theme.gold : "#E5E5E5",
+        padding: "3px",
+      }}
+    >
+      <div
+        className="w-4 h-4 bg-white rounded-full transition"
+        style={{
+          transform: value
+            ? "translateX(20px)"
+            : "translateX(0px)",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+        }}
+      />
+    </div>
+  )}
+</div>
+);
 }
+
+
+import { Settings } from "lucide-react";
+
+function Select({ label, value, edit, options, onChange, full }: any) {
+return (
+<div
+className={`relative flex items-center justify-between gap-4 rounded-xl p-5 transition ${
+        full ? "col-span-2" : ""
+      }`}
+style={{
+background: "linear-gradient(180deg, #FFFFFF, #FBF6EE)",
+border: `1px solid ${theme.divider}`,
+boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+}}
+onMouseEnter={(e) => {
+e.currentTarget.style.transform = "translateY(-2px)";
+e.currentTarget.style.boxShadow =
+"0 8px 22px rgba(0,0,0,0.08)";
+e.currentTarget.style.border = `1px solid ${theme.gold}`;
+}}
+onMouseLeave={(e) => {
+e.currentTarget.style.transform = "translateY(0)";
+e.currentTarget.style.boxShadow =
+"0 4px 12px rgba(0,0,0,0.05)";
+e.currentTarget.style.border = `1px solid ${theme.divider}`;
+}}
+>
+{/* LEFT SIDE */} <div className="flex items-center gap-4">
+{/* ICON */}
+<div
+className="flex items-center justify-center rounded-lg"
+style={{
+width: "40px",
+height: "40px",
+background: theme.goldSoft,
+color: theme.maroonDark,
+}}
+> <Settings size={16} /> </div>
+
+    {/* LABEL + VALUE */}
+    <div>
+      <p
+        className="text-[11px] uppercase tracking-wider"
+        style={{ color: theme.textMuted }}
+      >
+        {label}
+      </p>
+
+      {!edit && (
+        <p
+          className="text-sm font-semibold mt-1"
+          style={{ color: theme.maroonDark }}
+        >
+          {value}
+        </p>
+      )}
+    </div>
+  </div>
+
+  {/* RIGHT SIDE (SELECT) */}
+  {edit && (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="bg-transparent outline-none text-sm font-medium px-2 py-1 rounded-md"
+      style={{
+        border: `1px solid ${theme.gold}`,
+        color: theme.maroonDark,
+      }}
+    >
+      {options.map((o: string) => (
+        <option key={o}>{o}</option>
+      ))}
+    </select>
+  )}
+</div>
+);
+}
+
+
+import { CheckCircle, XCircle } from "lucide-react";
 
 function StatusPill({ status }: any) {
-  return (
-    <span
-      className="px-4 py-1 rounded-full text-xs font-semibold"
-      style={{
-        background: theme.goldSoft,
-        color: theme.maroonDark,
-        boxShadow: `0 0 10px ${theme.goldSoft}`,
-      }}
-    >
-      {status}
-    </span>
-  );
+const isActive = status === "ACTIVE";
+
+return (
+<span
+className="flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition"
+style={{
+background: isActive
+? "linear-gradient(135deg, #C8A951, #E8D9A5)"
+: "linear-gradient(135deg, #F3D6D6, #E8B4B4)",
+color: "#3B0A0D",
+boxShadow: isActive
+? "0 4px 14px rgba(200,169,81,0.4)"
+: "0 4px 14px rgba(155,43,43,0.3)",
+}}
+>
+{/* ICON */}
+{isActive ? ( <CheckCircle size={14} />
+) : ( <XCircle size={14} />
+)}
+
+
+  {/* TEXT */}
+  {status}
+</span>
+
+);
 }
 
+import { Save, X } from "lucide-react";
+
 function SaveBar({ onSave, onCancel }: any) {
-  return (
-    <div
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 rounded-xl flex gap-6 shadow-lg"
+return (
+<div
+className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-between gap-6 px-6 py-4 rounded-2xl backdrop-blur-md transition"
+style={{
+width: "min(600px, 90%)",
+background: "rgba(255,255,255,0.9)",
+border: `1px solid ${theme.divider}`,
+boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+}}
+>
+{/* LEFT TEXT */}
+<p
+className="text-sm font-medium"
+style={{ color: theme.textMuted }}
+>
+You have unsaved changes </p>
+
+  {/* ACTIONS */}
+  <div className="flex items-center gap-3">
+    {/* CANCEL */}
+    <button
+      onClick={onCancel}
+      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition"
       style={{
-        background: theme.surface,
-        boxShadow: `0 0 30px ${theme.goldSoft}`,
+        color: theme.maroonDark,
+        background: "#F5EFE6",
       }}
     >
-      <button onClick={onCancel} style={{ color: theme.textMuted }}>
-        Cancel
-      </button>
-      <button
-        onClick={onSave}
-        className="px-5 py-2 rounded-md text-white text-sm"
-        style={{ background: theme.maroon }}
-      >
-        Save changes
-      </button>
-    </div>
-  );
+      <X size={14} />
+      Cancel
+    </button>
+
+    {/* SAVE */}
+    <button
+      onClick={onSave}
+      className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white transition"
+      style={{
+        background:
+          "linear-gradient(135deg, #7B1F1F, #3B0A0D)",
+        boxShadow: "0 6px 18px rgba(123,31,31,0.4)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-1px)";
+        e.currentTarget.style.boxShadow =
+          "0 10px 24px rgba(123,31,31,0.5)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow =
+          "0 6px 18px rgba(123,31,31,0.4)";
+      }}
+    >
+      <Save size={14} />
+      Save Changes
+    </button>
+  </div>
+</div>
+
+);
 }
+
 
 function ConfirmModal({
   onCancel,

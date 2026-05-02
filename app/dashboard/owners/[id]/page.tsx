@@ -2,10 +2,10 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
+import { User, Mail, Phone, Calendar, Shield } from "lucide-react";
 /* ---------------- TYPES ---------------- */
 
-type Status = "Active" | "Suspended";
+type Status = "Active" | "Suspended" | "Inactive";
 type RestaurantStatus = "Active" | "Inactive";
 
 type Restaurant = {
@@ -104,15 +104,73 @@ export default function OwnerDetailsPage() {
   }
 };
 
+function OwnerDetailSkeleton() {
+  return (
+    <div className="px-12 py-10 animate-pulse">
+
+      {/* HEADER */}
+      <div className="mb-6">
+        <div className="h-8 w-48 bg-[#EADFD7] rounded mb-2"></div>
+        <div className="h-4 w-32 bg-[#F3ECE6] rounded"></div>
+      </div>
+
+      {/* CARD */}
+      <div className="rounded-2xl p-6 bg-white border border-[#EADFD7]">
+        
+        <div className="h-5 w-40 bg-[#EADFD7] rounded mb-6"></div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="flex items-center gap-4 p-4 rounded-xl bg-[#FBF6EE]"
+            >
+              <div className="w-10 h-10 bg-[#EADFD7] rounded-lg"></div>
+              <div className="flex-1">
+                <div className="h-3 w-24 bg-[#EADFD7] rounded mb-2"></div>
+                <div className="h-4 w-32 bg-[#F3ECE6] rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
   /* ---------------- STATES ---------------- */
 
   if (loading) {
-    return <p className="text-sm text-[#7B1F1F]">Loading owner…</p>;
-  }
+  return <OwnerDetailSkeleton />;
+}
 
-  if (!owner) {
-    return <p className="text-sm text-[#7B1F1F]">Owner not found</p>;
-  }
+ if (!owner) {
+  return (
+    <div className="px-12 py-10 flex flex-col items-center justify-center text-center">
+
+      <div className="text-4xl mb-3">😕</div>
+
+      <h2 className="text-lg font-semibold text-[#3B0A0D]">
+        Owner not found
+      </h2>
+
+      <p className="text-sm text-[#7B1F1F] mt-1">
+        The owner you're looking for doesn’t exist or was removed.
+      </p>
+
+      <button
+        onClick={() => router.push("/dashboard/owners")}
+        className="mt-5 px-5 py-2 rounded-lg text-sm font-medium text-white"
+        style={{
+          background: "linear-gradient(135deg,#7B1F1F,#3B0A0D)",
+        }}
+      >
+        Back to Owners
+      </button>
+    </div>
+  );
+}
 
   /* ---------------- UI ---------------- */
 
@@ -131,12 +189,28 @@ export default function OwnerDetailsPage() {
         </div>
 
         <button
-          onClick={() => router.push("/dashboard/owners")}
-          className="px-4 py-2 rounded-md text-sm font-medium border"
-          style={{ borderColor: "#C8A951", color: "#3B0A0D" }}
-        >
-          ← Back
-        </button>
+  onClick={() => router.push("/dashboard/owners")}
+  className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all"
+  style={{
+    background: "linear-gradient(135deg, #7B1F1F, #3B0A0D)", // 🔥 maroon gradient
+    color: "#F3DFA2", // gold text
+    border: "1px solid rgba(200,169,81,0.5)",
+    boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-1px)";
+    e.currentTarget.style.boxShadow =
+      "0 6px 18px rgba(0,0,0,0.35)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow =
+      "0 4px 14px rgba(0,0,0,0.25)";
+  }}
+>
+  <span style={{ fontSize: "16px" }}>←</span>
+  Back 
+</button>
       </div>
 
       {/* DIVIDER */}
@@ -149,73 +223,121 @@ export default function OwnerDetailsPage() {
 
       {/* OWNER INFO */}
       <Section title="Owner Information">
-        <Info label="Name" value={owner.name} />
-        <Info label="Email" value={owner.email} />
-        <Info label="Phone" value={owner.phone} />
-        <Info label="Joined On" value={owner.joinedOn} />
-        <Info label="Status">
-          <StatusBadge status={owner.status} />
-        </Info>
-      </Section>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+    <Field
+      icon={<User size={18} />}
+      label="Owner Name"
+      value={owner.name}
+    />
+
+    <Field
+      icon={<Mail size={18} />}
+      label="Email"
+      value={owner.email}
+    />
+
+    <Field
+      icon={<Phone size={18} />}
+      label="Phone"
+      value={owner.phone}
+    />
+
+    <Field
+      icon={<Calendar size={18} />}
+      label="Joined On"
+      value={new Date(owner.joinedOn).toLocaleDateString()}
+    />
+
+    {/* STATUS */}
+    <div className="flex items-center gap-4 p-4 rounded-xl border border-[#EADFD7] bg-[#FBF6EE] relative">
+      <div className="absolute left-0 top-3 bottom-3 w-[4px] rounded-full bg-[#C8A951]" />
+
+      <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#E8D9A5] text-[#3B0A0D]">
+        <Shield size={18} />
+      </div>
+
+      <div>
+        <p className="text-xs uppercase tracking-wide text-[#7B1F1F]">
+          Status
+        </p>
+
+        <span
+          className="inline-block mt-1 px-3 py-1 rounded-full text-xs font-semibold"
+          style={{
+            background:
+              owner.status === "Active"
+                ? "linear-gradient(135deg,#C8A951,#E8D9A5)"
+                : "linear-gradient(135deg,#F3D6D6,#E8B4B4)",
+            color: "#3B0A0D",
+          }}
+        >
+          {owner.status}
+        </span>
+      </div>
+    </div>
+
+  </div>
+</Section>
 
       {/* RESTAURANTS */}
       <Section title="Linked Restaurants">
-        <div
-          className="overflow-hidden border rounded-lg"
-          style={{ borderColor: "#C8A951" }}
-        >
-          <table className="w-full text-sm">
-            <thead style={{ backgroundColor: "#FBF6EE" }}>
-              <tr className="text-left font-semibold text-[#3B0A0D]">
-                <th className="px-6 py-3">Restaurant</th>
-                <th className="px-6 py-3">City</th>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3">Action</th>
-              </tr>
-            </thead>
+        <div className="overflow-hidden rounded-2xl border border-[#EADFD7]">
+  <table className="w-full text-sm">
 
-            <tbody className="divide-y" style={{ borderColor: "#C8A951" }}>
-              {owner.restaurants.map((r) => (
-                <tr key={r.id} className="hover:bg-[#FBF6EE]">
-                  <td className="px-6 py-4 font-medium text-[#3B0A0D]">
-                    {r.name}
-                  </td>
-                  <td className="px-6 py-4 text-[#7B1F1F]">
-                    {r.city}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className="px-3 py-1 rounded-full text-xs font-semibold"
-                      style={{
-                        backgroundColor:
-                          r.status === "Active"
-                            ? "rgba(200,169,81,0.25)"
-                            : "rgba(155,43,43,0.18)",
-                        color:
-                          r.status === "Active"
-                            ? "#3B0A0D"
-                            : "#7B1F1F",
-                      }}
-                    >
-                      {r.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() =>
-                        router.push(`/dashboard/restaurants/${r.id}`)
-                      }
-                      className="px-4 py-1.5 rounded-md text-xs font-medium text-white"
-                      style={{ backgroundColor: "#7B1F1F" }}
-                    >
-                      Manage
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <thead
+      style={{
+        background: "linear-gradient(180deg, #FFF8E7, #F3E6C9)",
+        color: "#3B0A0D",
+      }}
+    >
+      <tr className="text-xs uppercase tracking-wide">
+        <th className="px-6 py-4 text-left">Restaurant</th>
+        <th className="px-6 py-4 text-left">City</th>
+        <th className="px-6 py-4 text-left">Status</th>
+        <th className="px-6 py-4 text-right">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {owner.restaurants.map((r, i) => (
+        <tr
+          key={r.id}
+          className={`transition ${
+            i % 2 === 0 ? "bg-white" : "bg-[#FBF6EE]"
+          } hover:bg-[#F3ECE6]`}
+        >
+          <td className="px-6 py-4 font-medium text-[#3B0A0D]">
+            {r.name}
+          </td>
+
+          <td className="px-6 py-4 text-[#7B1F1F]">
+            {r.city}
+          </td>
+
+          <td className="px-6 py-4">
+            <StatusBadge status={r.status} />
+          </td>
+
+          <td className="px-6 py-4 text-right">
+            <button
+              onClick={() =>
+                router.push(`/dashboard/restaurants/${r.id}`)
+              }
+              className="px-4 py-1.5 rounded-md text-white text-xs"
+              style={{
+                background: "linear-gradient(135deg,#7B1F1F,#3B0A0D)",
+              }}
+            >
+              Manage
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+
+  </table>
+</div>
       </Section>
 
       {/* PLATFORM ACTION */}
@@ -263,30 +385,47 @@ function Section({
   );
 }
 
-function Info({ label, value, children }: any) {
+
+function Field({ icon, label, value }: any) {
   return (
-    <div className="flex justify-between text-sm">
-      <span className="text-[#7B1F1F] font-medium">{label}</span>
-      <span className="text-[#3B0A0D] font-semibold">
-        {value ?? children}
-      </span>
+    <div className="flex items-center gap-4 p-4 rounded-xl border border-[#EADFD7] bg-[#FBF6EE] relative">
+
+      {/* GOLD LEFT BAR */}
+      <div className="absolute left-0 top-3 bottom-3 w-[4px] rounded-full bg-[#C8A951]" />
+
+      {/* ICON */}
+      <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#E8D9A5] text-[#3B0A0D]">
+        {icon}
+      </div>
+
+      {/* TEXT */}
+      <div>
+        <p className="text-xs uppercase tracking-wide text-[#7B1F1F]">
+          {label}
+        </p>
+        <p className="text-sm font-semibold text-[#3B0A0D]">
+          {value || "—"}
+        </p>
+      </div>
     </div>
   );
 }
 
 function StatusBadge({ status }: { status: Status }) {
+  const isActive = status === "Active";
+
   return (
     <span
       className="px-3 py-1 rounded-full text-xs font-semibold"
       style={{
-        backgroundColor:
-          status === "Active"
-            ? "rgba(200,169,81,0.25)"
-            : "rgba(155,43,43,0.18)",
-        color: status === "Active" ? "#3B0A0D" : "#7B1F1F",
+        background:
+          isActive
+            ? "linear-gradient(135deg,#C8A951,#E8D9A5)"
+            : "linear-gradient(135deg,#F3D6D6,#E8B4B4)",
+        color: "#3B0A0D",
       }}
     >
-      {status}
+      {status.toUpperCase()}
     </span>
   );
 }

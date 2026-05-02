@@ -55,135 +55,109 @@ export default function DashboardPage() {
 }, [router]);
 
   return (
-    <div
-      className="rounded-3xl p-8 space-y-12"
-      style={{ backgroundColor: "#FBF6EE" }}
-    >
-      {/* ================= HEADER ================= */}
-      <div>
-        <h1
-          className="text-3xl font-semibold"
-          style={{ color: "#3B0A0D" }}
-        >
-          Welcome, Super Admin
-        </h1>
-        <p
-          className="text-sm mt-1 max-w-2xl"
-          style={{ color: "#7B1F1F" }}
-        >
-          You’re overseeing all restaurants on the platform. Track activity,
-          manage access, and ensure smooth operations from one place.
-        </p>
-      </div>
+  <div className="w-full space-y-10">
 
-      {/* ================= STATS ================= */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <StatTile title="Total Restaurants" value={stats?.totalRestaurants} />
-        <StatTile title="Active Restaurants" value={stats?.activeRestaurants} />
-        <StatTile
-          title="Inactive Restaurants"
-          value={stats?.inactiveRestaurants}
-        />
-        <StatTile title="Orders Today" value={stats?.ordersToday} />
-      </div>
-
-      {/* ================= RECENT RESTAURANTS ================= */}
-      <div>
-        <h3
-          className="text-sm font-semibold mb-4 tracking-wide"
-          style={{ color: "#3B0A0D" }}
-        >
-          Recent Restaurants
-        </h3>
-
-        <div
-          className="rounded-2xl overflow-hidden"
-          style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #C8A951",
-            boxShadow: "0 0 30px rgba(200,169,81,0.35)",
-          }}
-        >
-          <table className="w-full text-sm">
-            <thead
-              style={{
-                backgroundColor: "#FBF6EE",
-                color: "#3B0A0D",
-              }}
-            >
-              <tr>
-                <th className="px-6 py-4 text-left font-semibold">
-                  Restaurant
-                </th>
-                <th className="px-6 py-4 text-left font-medium">
-                  Owner
-                </th>
-                <th className="px-6 py-4 text-left font-medium">
-                  City
-                </th>
-                <th className="px-6 py-4 text-left font-medium">
-                  Status
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {restaurants.map((r) => (
-                <tr
-                  key={r.id}
-                  onClick={() =>
-                    router.push(`/dashboard/restaurants/${r.id}`)
-                  }
-                  className="cursor-pointer transition"
-                  style={{
-                    borderTop: "1px solid rgba(200,169,81,0.25)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background =
-                      "rgba(251,246,238,0.9)";
-                    e.currentTarget.style.boxShadow =
-                      "inset 4px 0 0 #C8A951";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  <td
-                    className="px-6 py-4 font-medium"
-                    style={{ color: "#3B0A0D" }}
-                  >
-                    {r.name}
-                  </td>
-                  <td className="px-6 py-4 text-[#7B1F1F]">
-                    {r.owner_name}
-                  </td>
-                  <td className="px-6 py-4 text-[#7B1F1F]">
-                    {r.city}
-                  </td>
-                  <td className="px-6 py-4">
-                    <StatusBadge status={r.status} />
-                  </td>
-                </tr>
-              ))}
-
-              {restaurants.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-6 py-8 text-center"
-                    style={{ color: "#7B1F1F" }}
-                  >
-                    No restaurants onboarded yet
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    {/* HEADER */}
+    <div>
+      <h1 className="text-4xl font-semibold text-[#3B0A0D] mb-2">
+        Welcome, Super Admin
+      </h1>
+      <p className="text-sm text-[#7B1F1F] max-w-2xl">
+        You’re overseeing all restaurants on the platform. Track activity,
+        manage access, and ensure smooth operations from one place.
+      </p>
     </div>
-  );
+
+    {/* STATS */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <StatTile title="Total Restaurants" value={stats?.totalRestaurants} />
+      <StatTile title="Active Restaurants" value={stats?.activeRestaurants} />
+      <StatTile title="Inactive Restaurants" value={stats?.inactiveRestaurants} />
+      <StatTile title="Orders Today" value={stats?.ordersToday} />
+
+    </div>
+
+    {/* RECENT RESTAURANTS */}
+    <div>
+      <h3 className="text-base font-semibold text-[#3B0A0D] mb-4">
+        Recent Restaurants
+      </h3>
+
+      <div className="bg-white rounded-2xl border border-[#EADFD7] p-4">
+
+  <table className="w-full text-sm">
+
+    {/* HEADER */}
+    <thead
+  style={{
+    background: "linear-gradient(180deg, #FFF8E7, #F9F5EF)",
+  }}
+>
+  <tr
+    className="text-xs uppercase tracking-wider"
+    style={{
+      color: "#7B1F1F",
+      borderBottom: "1px solid #EADFD7",
+    }}
+  >
+    <th className="px-6 py-3 text-left font-semibold">
+      Restaurant
+    </th>
+    <th className="px-6 py-3 text-left font-semibold">
+      Owner
+    </th>
+    <th className="px-6 py-3 text-left font-semibold">
+      City
+    </th>
+    <th className="px-6 py-3 text-left font-semibold">
+      Status
+    </th>
+  </tr>
+</thead>
+
+    {/* BODY */}
+    <tbody>
+      {restaurants.map((r, index) => (
+        <tr
+          key={r.id}
+          onClick={() => router.push(`/dashboard/restaurants/${r.id}`)}
+          className={`cursor-pointer transition-all duration-200
+            ${index % 2 === 0 ? "bg-[#FBF6EE]" : "bg-white"}
+            hover:bg-[#F3ECE6]`}
+        >
+          <td className="px-6 py-4 font-medium text-[#3B0A0D]">
+            {r.name}
+          </td>
+
+          <td className="px-6 py-4 text-[#7B1F1F]">
+            {r.owner_name}
+          </td>
+
+          <td className="px-6 py-4 text-[#7B1F1F]">
+            {r.city}
+          </td>
+
+          <td className="px-6 py-4">
+            <StatusBadge status={r.status} />
+          </td>
+        </tr>
+      ))}
+
+      {restaurants.length === 0 && (
+        <tr>
+          <td colSpan={4} className="px-6 py-8 text-center text-[#7B1F1F]">
+            No restaurants onboarded yet
+          </td>
+        </tr>
+      )}
+    </tbody>
+
+  </table>
+</div>
+    </div>
+  </div>
+);
 }
 
 /* ================= COMPONENTS ================= */
@@ -197,23 +171,17 @@ function StatTile({
 }) {
   return (
     <div
-      className="rounded-2xl px-6 py-6"
+      className="rounded-2xl p-6 bg-white transition-all duration-300
+                 hover:shadow-lg hover:-translate-y-1"
       style={{
-        backgroundColor: "#FFFFFF",
         borderTop: "4px solid #C8A951",
-        boxShadow: "0 0 24px rgba(200,169,81,0.45)",
       }}
     >
-      <p
-        className="text-xs uppercase tracking-wide mb-2"
-        style={{ color: "#7B1F1F" }}
-      >
+      <p className="text-xs uppercase tracking-wide text-[#7B1F1F] mb-2">
         {title}
       </p>
-      <p
-        className="text-4xl font-semibold"
-        style={{ color: "#3B0A0D" }}
-      >
+
+      <p className="text-4xl font-semibold text-[#3B0A0D]">
         {value ?? "—"}
       </p>
     </div>
@@ -221,17 +189,21 @@ function StatTile({
 }
 
 function StatusBadge({ status }: { status: "ACTIVE" | "INACTIVE" }) {
+  const isActive = status === "ACTIVE";
+
   return (
     <span
-      className="px-4 py-1.5 rounded-full text-xs font-semibold"
+      className="px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit"
       style={{
-        backgroundColor:
-          status === "ACTIVE"
-            ? "rgba(200,169,81,0.3)"
-            : "rgba(155,43,43,0.2)",
-        color: status === "ACTIVE" ? "#3B0A0D" : "#7B1F1F",
+        backgroundColor: isActive ? "#EADFD7" : "#FBE4E4",
+        color: isActive ? "#3B0A0D" : "#7B1F1F",
       }}
     >
+      <span
+        className={`w-2 h-2 rounded-full ${
+          isActive ? "bg-green-500" : "bg-red-400"
+        }`}
+      />
       {status}
     </span>
   );

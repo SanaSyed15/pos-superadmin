@@ -21,30 +21,32 @@ export default function DashboardLayout({
 }, [router]);
 
   return (
+  <div className="bg-[#F3ECE6]">
+
+    {/* SIDEBAR */}
+    <Sidebar />
+
+    {/* MAIN CONTENT */}
     <div
-      className="flex min-h-screen"
-      style={{ backgroundColor: "#FBF6EE" }}
+      className="flex flex-col min-h-screen"
+      style={{ marginLeft: "256px" }} 
     >
-      {/* SIDEBAR */}
-      <Sidebar />
 
-      {/* CONTENT AREA */}
-      <div className="flex-1 flex flex-col">
-        <Topbar />
+      {/* TOPBAR (keep as is) */}
+      <Topbar />
 
-        {/* MAIN CONTENT WRAPPER */}
-        <main className="flex-1 overflow-y-auto p-8">
-          <div
-            className="min-h-full rounded-3xl p-8"
-            style={{
-              backgroundColor: "#FBF6EE",
-              boxShadow: "0 0 32px rgba(200,169,81,0.15)",
-            }}
-          >
-            {children}
-          </div>
-        </main>
-      </div>
+      {/* MAIN SCROLL AREA */}
+      <main className="flex-1 overflow-y-auto px-8 py-6">
+
+        {/* CONTENT WRAPPER */}
+        <div className="min-h-full rounded-3xl bg-[#F9F5EF] p-8 shadow-sm transition-all duration-300">
+
+          {children}
+
+        </div>
+
+      </main>
     </div>
-  );
+  </div>
+);
 }
