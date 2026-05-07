@@ -357,11 +357,18 @@ function AddRestaurantModal({
   }
 );
 
-    if (res.ok) {
-      onClose();
-      onSuccess();
-    }
-    setSaving(false);
+    const data = await res.json();
+
+console.log("ONBOARD RESPONSE:", data);
+
+if (res.ok) {
+  onClose();
+  onSuccess();
+} else {
+  alert(data.message || "Onboarding failed");
+}
+
+setSaving(false);
   };
 
   return (
