@@ -118,9 +118,10 @@ export default function SetPasswordPage() {
 
       setTimeout(() => {
 
-        router.push("/login");
+  window.location.href =
+  "https://pojectfinalrepo.vercel.app/admin/login";
 
-      }, 1500);
+}, 1500);
 
     } catch (err: any) {
 
