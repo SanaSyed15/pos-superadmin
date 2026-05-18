@@ -113,15 +113,9 @@ export default function SetPasswordPage() {
       );
 
       alert(
-        "Password set successfully"
+        "Password set successfully.Please login to continue."
       );
 
-      setTimeout(() => {
-
-  window.location.href =
-  "https://pojectfinalrepo.vercel.app/admin/login";
-
-}, 1500);
 
     } catch (err: any) {
 

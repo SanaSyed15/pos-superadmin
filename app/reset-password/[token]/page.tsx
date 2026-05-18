@@ -41,12 +41,9 @@ export default function ResetPassword() {
         }
       );
 
-      alert("Password reset successful");
+      alert("Password reset successful.Please login to continue.");
 
-      // ✅ AUTO REDIRECT TO LOGIN
-      setTimeout(() => {
-       router.push("/login"); 
-      }, 1500);
+      
 
     } catch (err: any) {
       alert(err?.response?.data?.message || "Invalid or expired token");
