@@ -17,9 +17,9 @@ import {
 
 /* ============================================================
    PUREDINE — Super Admin Landing
-   Palette: burgundy #7a1f1f · gold #c9a45c · warm cream
-   Display: Fraunces · Body: Inter · Data/mono: JetBrains Mono
-   Signature element: the "ticket" panel — a POS-receipt shaped
+   Palette: burgundy #7a1f1f, gold #c9a45c, warm cream
+   Display: Fraunces, Body: Inter, Data/mono: JetBrains Mono
+   Signature element: the "ticket" panel, a POS receipt shaped
    card (perforated edges) used for the hero stat readout.
    ============================================================ */
 
@@ -34,33 +34,33 @@ const CORE_MODULES: CoreModule[] = [
   {
     title: "Restaurant Configuration",
     desc: "Set up restaurant details, GST, and table layouts in minutes.",
-    img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop",
-    points: ["GST & tax settings", "Table layout management", "Restaurant profile setup"],
+    img: "https://images.unsplash.com/photo-1753727471014-efe38840c7c7?q=80&w=1200&auto=format&fit=crop",
+    points: ["GST and tax settings", "Table layout management", "Restaurant profile setup"],
   },
   {
     title: "Menu Management",
     desc: "Build categories and manage menu items dynamically, in real time.",
-    img: "https://images.unsplash.com/photo-1599250300435-b9693f21830d?q=80&w=1200&auto=format&fit=crop",
-    points: ["Add / edit menu items", "Veg / non-veg classification", "Real-time QR sync"],
+    img: "https://images.unsplash.com/photo-1750943082452-c714763f73b2?q=80&w=1200&auto=format&fit=crop",
+    points: ["Add or edit menu items", "Veg / non veg classification", "Real time QR sync"],
   },
   {
     title: "Order Management",
-    desc: "Handle dine-in, takeaway, and online orders from one queue.",
-    img: "https://images.unsplash.com/photo-1682072155213-856c2ab9d629?q=80&w=1200&auto=format&fit=crop",
+    desc: "Handle dine in, takeaway, and online orders from one queue.",
+    img: "https://images.unsplash.com/photo-1753351057596-505f35c31012?q=80&w=1200&auto=format&fit=crop",
     points: ["Order lifecycle tracking", "Live order updates", "Full order history"],
   },
   {
     title: "Billing & Payments",
     desc: "Generate compliant invoices and reconcile payments automatically.",
-    img: "https://images.unsplash.com/photo-1726137569962-456daf4ec02f?q=80&w=1200&auto=format&fit=crop",
-    points: ["GST-compliant billing", "Digital invoices", "Multiple payment modes"],
+    img: "https://images.unsplash.com/photo-1726137570707-528402375b7b?q=80&w=1200&auto=format&fit=crop",
+    points: ["GST compliant billing", "Digital invoices", "Multiple payment modes"],
   },
 ];
 
 const MARQUEE = [
   "Super Admin Panel",
   "Platform Control",
-  "Multi-Restaurant",
+  "Multi Restaurant",
   "Global Dashboard",
   "Admin Management",
   "System Analytics",
@@ -69,10 +69,10 @@ const MARQUEE = [
 ];
 
 const FEATURES = [
-  { Icon: Building2, num: "01", title: "Multi-Restaurant Control", body: "Manage every branch on the platform from one centralized system." },
+  { Icon: Building2, num: "01", title: "Multi Restaurant Control", body: "Manage every branch on the platform from one centralized system." },
   { Icon: BarChart3, num: "02", title: "Global Analytics", body: "Track performance and revenue across all outlets, side by side." },
-  { Icon: UserCog, num: "03", title: "Admin Management", body: "Manage every admin account with granular, role-based permissions." },
-  { Icon: SlidersHorizontal, num: "04", title: "Platform Settings", body: "Control system-wide configuration from a single source of truth." },
+  { Icon: UserCog, num: "03", title: "Admin Management", body: "Manage every admin account with granular, role based permissions." },
+  { Icon: SlidersHorizontal, num: "04", title: "Platform Settings", body: "Control system wide configuration from a single source of truth." },
   { Icon: ShieldCheck, num: "05", title: "Security Logs", body: "Monitor activity and audit every action across the platform." },
   { Icon: Globe2, num: "06", title: "System Monitoring", body: "Track uptime and performance globally, around the clock." },
 ];
@@ -115,7 +115,7 @@ const ECOSYSTEM = [
 const ROLES = [
   { role: "Super Admin", desc: "Controls the platform, manages restaurants, and monitors global analytics and system health." },
   { role: "Restaurant Owner", desc: "Manages menu, orders, staff, reports, and overall business performance." },
-  { role: "Staff", desc: "Handles billing, order processing, and real-time service operations." },
+  { role: "Staff", desc: "Handles billing, order processing, and real time service operations." },
   { role: "Customer", desc: "Scans a QR code, browses the menu, and places an order effortlessly." },
 ];
 
@@ -123,21 +123,21 @@ const STEPS = ["Scan QR", "View Menu", "Place Order", "Kitchen", "Payment"];
 
 const DESCRIPTIONS = [
   "The customer scans the QR code placed on their table.",
-  "The menu loads instantly with real-time items and pricing.",
+  "The menu loads instantly with real time items and pricing.",
   "The customer selects items and places their order.",
   "The kitchen receives the ticket and starts preparing it.",
   "The bill is generated and payment is completed on the spot.",
 ];
 
 const STEP_IMAGES = [
-  "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1599250300435-b9693f21830d?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1682072155213-856c2ab9d629?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1760169799369-2b8574466735?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1726137569962-456daf4ec02f?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1706759755964-b0aa57a58c5a?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1750943082452-c714763f73b2?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1726064855881-3bbb7000b29f?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1745236549199-542fe7a368f4?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1726137570707-528402375b7b?q=80&w=800&auto=format&fit=crop",
 ];
 
-/* ---------- lightweight scroll-reveal (no external component needed) --- */
+/* ---------- lightweight scroll reveal (no external component needed) --- */
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -438,8 +438,8 @@ export default function PureDineLanding() {
             Run every restaurant<br />from <em>one table</em>.
           </h1>
           <p className="pd-hero-desc">
-            PUREDINE gives you real-time command over menus, orders, billing, and every
-            branch on the platform — from a single, centralized dashboard.
+            PUREDINE gives you real time command over menus, orders, billing, and every
+            branch on the platform, from a single, centralized dashboard.
           </p>
           <div className="pd-hero-cta-row">
             <a href="/login" className="pd-btn-primary">
@@ -456,13 +456,13 @@ export default function PureDineLanding() {
           </div>
           <div className="pd-hero-img-main">
             <img
-              src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop"
+              src="https://images.unsplash.com/photo-1753727471014-efe38840c7c7?q=80&w=1200&auto=format&fit=crop"
               alt="Restaurant dining room"
             />
           </div>
           <div className="pd-hero-img-accent">
             <img
-              src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=800&auto=format&fit=crop"
+              src="https://images.unsplash.com/photo-1745236549199-542fe7a368f4?q=80&w=800&auto=format&fit=crop"
               alt="Kitchen in service"
             />
           </div>
@@ -507,8 +507,8 @@ export default function PureDineLanding() {
             <div className="pd-head" style={{ marginBottom: 0 }}>
               <span className="pd-head-eyebrow">Product Ecosystem</span>
               <h2>One platform, <em>three</em> connected systems.</h2>
-              <p>PUREDINE connects your entire restaurant workflow — from customer ordering to
-              admin analytics — through a single, unified system.</p>
+              <p>PUREDINE connects your entire restaurant workflow, from customer ordering to
+              admin analytics, through a single, unified system.</p>
             </div>
             <div className="pd-eco-grid">
               {ECOSYSTEM.map((item) => (
@@ -538,7 +538,7 @@ export default function PureDineLanding() {
             <span className="pd-head-eyebrow">User Roles</span>
             <h2>Built for every <em>role</em> at the table.</h2>
             <p>Designed for seamless collaboration between administrators, staff, and
-            customers — all inside one ecosystem.</p>
+            customers, all inside one ecosystem.</p>
           </div>
           <div className="pd-role-grid">
             {ROLES.map((r) => (
@@ -601,7 +601,7 @@ export default function PureDineLanding() {
           <div className="pd-head">
             <span className="pd-head-eyebrow">System Flow</span>
             <h2>How <em>PUREDINE</em> works.</h2>
-            <p>A seamless ordering journey from QR scan to payment — built for speed,
+            <p>A seamless ordering journey from QR scan to payment, built for speed,
             simplicity, and efficiency.</p>
           </div>
           <div className="pd-flow-grid">
@@ -638,8 +638,8 @@ export default function PureDineLanding() {
         <section className="pd-final">
           <div className="pd-eyebrow" style={{ justifyContent: "center" }}><i /><span>Get Started</span></div>
           <h2>Take full control of your <em>restaurant ecosystem</em>.</h2>
-          <p>From QR ordering to real-time analytics, manage every part of your restaurant
-          seamlessly — all in one powerful platform.</p>
+          <p>From QR ordering to real time analytics, manage every part of your restaurant
+          seamlessly, all in one powerful platform.</p>
           <a href="/login" className="pd-btn-primary" style={{ background: "linear-gradient(135deg, var(--gold), #b8934f)", color: "#2b1a10" }}>
             Launch Dashboard <ArrowUpRight />
           </a>
@@ -650,7 +650,7 @@ export default function PureDineLanding() {
           <div className="pd-contact">
             <h4>Own a restaurant?</h4>
             <p>Transform your operations with PUREDINE. Get QR ordering, billing,
-            analytics, and complete management — all in one system.</p>
+            analytics, and complete management, all in one system.</p>
             <div className="pd-contact-row">
               <a href="mailto:support@puredine.com" className="pd-contact-btn" style={{ background: "var(--burgundy)", color: "#fff" }}>
                 Contact Us
